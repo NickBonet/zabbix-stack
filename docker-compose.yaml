@@ -1,13 +1,13 @@
 version: '3.5'
 services:
   db:
-    image: postgres
+    image: postgres:16-alpine
     restart: always
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pg16data:/var/lib/postgresql/data
     env_file:
       - ./.zabbix.env
-  
+
   zabbix-server:
     image: zabbix/zabbix-server-pgsql
     ports:
@@ -26,11 +26,13 @@ services:
     depends_on:
       - "db"
       - "zabbix-server"
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
     env_file:
       - ./.zabbix.env
-  
+
   zabbix-agent:
-    image: zabbix/zabbix-agent
+    image: zabbix/zabbix-agent:alpine-latest
     ports:
       - "10050:10050"
     restart: always
@@ -38,7 +40,7 @@ services:
       - "db"
       - "zabbix-server"
     environment:
-      ZBX_HOSTNAME: zabbix-agent
-    
+      ZBX_HOSTNAME: Zabbix server
+
 volumes:
-  pgdata:
+  pg16data:
