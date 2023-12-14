@@ -21,7 +21,7 @@ services:
   zabbix-web:
     image: zabbix/zabbix-web-nginx-pgsql
     ports:
-      - "7000:8080"
+      - "127.0.0.1:7000:8080"
     restart: always
     depends_on:
       - "db"
@@ -34,7 +34,7 @@ services:
   zabbix-agent:
     image: zabbix/zabbix-agent:alpine-latest
     ports:
-      - "10050:10050"
+      - "127.0.0.1:10050:10050"
     restart: always
     depends_on:
       - "db"
